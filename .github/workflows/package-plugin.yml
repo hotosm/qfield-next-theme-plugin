@@ -1,0 +1,84 @@
+name: Package QField plugin
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PLUGIN_SLUG: qfield-toggle-theme-plugin
+  ZIP_NAME: qfield-toggle-theme-plugin.zip
+
+jobs:
+  package:
+    name: Package plugin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Build plugin ZIP
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZIP_DEFLATED, ZipFile
+
+          files = [
+              Path("main.qml"),
+              Path("metadata.txt"),
+              Path("basemap.svg"),
+              Path("LICENSE"),
+          ]
+          missing = [str(path) for path in files if not path.exists()]
+          if missing:
+              raise SystemExit(f"Missing required plugin files: {', '.join(missing)}")
+
+          zip_path = Path("dist") / "qfield-toggle-theme-plugin.zip"
+          with ZipFile(zip_path, "w", ZIP_DEFLATED) as archive:
+              for path in files:
+                  archive.write(path, path.name)
+          PY
+
+      - name: Verify plugin ZIP layout
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          zip_path = Path("dist/qfield-toggle-theme-plugin.zip")
+          with ZipFile(zip_path) as archive:
+              names = set(archive.namelist())
+          required = {"main.qml", "metadata.txt", "basemap.svg"}
+          missing = required - names
+          if missing:
+              raise SystemExit(f"ZIP is missing root entries: {', '.join(sorted(missing))}")
+          nested_main = [name for name in names if name.endswith("/main.qml")]
+          if nested_main:
+              raise SystemExit(f"main.qml must be at ZIP root, found nested entries: {nested_main}")
+          print("\n".join(sorted(names)))
+          PY
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.PLUGIN_SLUG }}
+          path: dist/${{ env.ZIP_NAME }}
+          if-no-files-found: error
+
+      - name: Attach ZIP to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/${{ env.ZIP_NAME }}
+          make_latest: true
+          overwrite_files: true
