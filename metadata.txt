@@ -1,7 +1,7 @@
 [general]
-name=Theme Toggle
-description=One-tap toggle between two map themes
+name=Next Theme
+description=One-tap cycle to the next map theme
 author=hotosm.org
 icon=basemap.svg
 version=1.0
-homepage=https://github.com/hotosm/qfield-toggle-theme-plugin
+homepage=https://github.com/hotosm/qfield-next-theme-plugin

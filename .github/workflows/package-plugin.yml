@@ -13,8 +13,8 @@ permissions:
   contents: write
 
 env:
-  PLUGIN_SLUG: qfield-toggle-theme-plugin
-  ZIP_NAME: qfield-toggle-theme-plugin.zip
+  PLUGIN_SLUG: qfield-next-theme-plugin
+  ZIP_NAME: qfield-next-theme-plugin.zip
 
 jobs:
   package:
@@ -42,7 +42,7 @@ jobs:
           if missing:
               raise SystemExit(f"Missing required plugin files: {', '.join(missing)}")
 
-          zip_path = Path("dist") / "qfield-toggle-theme-plugin.zip"
+          zip_path = Path("dist") / "qfield-next-theme-plugin.zip"
           with ZipFile(zip_path, "w", ZIP_DEFLATED) as archive:
               for path in files:
                   archive.write(path, path.name)
@@ -55,7 +55,7 @@ jobs:
           from pathlib import Path
           from zipfile import ZipFile
 
-          zip_path = Path("dist/qfield-toggle-theme-plugin.zip")
+          zip_path = Path("dist/qfield-next-theme-plugin.zip")
           with ZipFile(zip_path) as archive:
               names = set(archive.namelist())
           required = {"main.qml", "metadata.txt", "basemap.svg"}
