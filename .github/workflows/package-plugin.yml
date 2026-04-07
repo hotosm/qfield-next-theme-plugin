@@ -72,7 +72,11 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: ${{ env.PLUGIN_SLUG }}
-          path: dist/${{ env.ZIP_NAME }}
+          path: |
+            main.qml
+            metadata.txt
+            basemap.svg
+            LICENSE
           if-no-files-found: error
 
       - name: Attach ZIP to GitHub Release
