@@ -10,8 +10,8 @@ Item {
 
   // ── Cycle to next map theme ──
   function cycleTheme() {
-    var names = flatLayerTree.mapThemeCollection.mapThemes()
-    if (names.length < 2) {
+    var names = qgisProject.mapThemeCollection.mapThemes
+    if (!names || names.length < 2) {
       mainWindow.displayToast(qsTr("Next Theme: project needs at least 2 map themes"))
       return
     }
