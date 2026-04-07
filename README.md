@@ -17,3 +17,9 @@ To install the latest version in QField, choose to **Install plugin from URL** w
   API for QField.
 - Baselayers can be configured in Themes (Satellite & OpenStreetMap),
   then cycled using this new button.
+
+## Screenshot
+
+The plugin button can be seen at the top right:
+
+![screenshot](./screenshot.gif)
