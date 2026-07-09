@@ -6,6 +6,10 @@ To install the latest version in QField, choose to **Install plugin from URL** w
 
 `https://github.com/hotosm/qfield-next-theme-plugin/releases/latest/download/qfield-next-theme-plugin.zip`
 
+Or scan the QRCode:
+
+![qrcode](./next-theme-plugin-qrcode.png)
+
 ## Rationale
 
 - Initially, a user wanted a plugin to easily cycle base layers
